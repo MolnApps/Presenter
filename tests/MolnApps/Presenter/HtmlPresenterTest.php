@@ -2,7 +2,9 @@
 
 namespace MolnApps\Presenter;
 
-class HtmlPresenterTest extends \PHPUnit_Framework_TestCase
+use \PHPUnit\Framework\TestCase;
+
+class HtmlPresenterTest extends TestCase
 {
 	/** @test */
 	public function it_can_be_instantiated()
@@ -14,7 +16,8 @@ class HtmlPresenterTest extends \PHPUnit_Framework_TestCase
 	/** @test */
 	public function it_cannot_be_instantiated_without_a_object()
 	{
-		$this->setExpectedException('\Exception', 'HtmlPresenter expects an object');
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('HtmlPresenter expects an object');
 
 		$instance = new HtmlPresenter('foobar');
 	}
@@ -22,7 +25,8 @@ class HtmlPresenterTest extends \PHPUnit_Framework_TestCase
 	/** @test */
 	public function it_cannot_be_instantiated_with_another_presenter()
 	{
-		$this->setExpectedException('\Exception', 'Cannot pass another HtmlPresenter as an object');
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('Cannot pass another HtmlPresenter as an object');
 
 		$instance = new HtmlPresenter(new HtmlPresenter($this->createObjectMock()));
 	}
