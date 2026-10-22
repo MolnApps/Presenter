@@ -101,7 +101,7 @@ class HtmlPresenter implements \Iterator
 			return $this->escapeArray($value);
 		}
 
-		return htmlentities($value, ENT_QUOTES, 'UTF-8');
+		return htmlentities((string)$value, ENT_QUOTES, 'UTF-8');
 	}
 
 	private function escapeArray(array $array)
