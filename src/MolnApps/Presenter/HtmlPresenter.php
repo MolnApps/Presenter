@@ -4,10 +4,10 @@ namespace MolnApps\Presenter;
 
 class HtmlPresenter implements \Iterator
 {
-	private $object;
-	private $implementsIterator;
+	private mixed $object;
+	private bool $implementsIterator;
 
-	public function __construct($object)
+	public function __construct(mixed $object)
 	{
 		if ( ! is_object($object)) {
 			throw new \InvalidArgumentException('HtmlPresenter expects an object.');
@@ -35,7 +35,7 @@ class HtmlPresenter implements \Iterator
 		return $this->escape(get_class($this->object));
 	}
 
-	public function __call($methodName, $args)
+	public function __call(string $methodName, array $args)
 	{
 		$rawValue = call_user_func_array([$this->object, $methodName], $args);
 
@@ -46,7 +46,7 @@ class HtmlPresenter implements \Iterator
 		return $this->escape($rawValue);
 	}
 
-	public function __get($property)
+	public function __get(string $property)
 	{
 		$rawValue = $this->object->$property;
 		
@@ -56,33 +56,33 @@ class HtmlPresenter implements \Iterator
 	}
 
 	// !Iterator imp
-	public function rewind() {
+	public function rewind() : void {
        if ($this->implementsIterator) {
-       		return $this->object->rewind();
+       		$this->object->rewind();
        }
     }
 
-    public function current() {
+    public function current() : mixed {
 		if ($this->implementsIterator) {
 			return $this->escape($this->object->current());
 		}
 		return $this;
     }
 
-    public function key() {
+    public function key() : mixed {
         if ($this->implementsIterator) {
 			return $this->object->key();
 		}
 		return 0;
     }
 
-    public function next() {
+    public function next() : void {
     	if ($this->implementsIterator) {
-			return $this->object->next();
+			$this->object->next();
 		}
     }
 
-    function valid() {
+    function valid() : bool {
     	if ($this->implementsIterator) {
 			return $this->object->valid();
 		}
@@ -91,7 +91,7 @@ class HtmlPresenter implements \Iterator
 
     // !Escape methods
 
-	private function escape($value)
+	private function escape(mixed $value)
 	{
 		if (is_object($value)) {
 			return new static($value);
